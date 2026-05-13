@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AllMarket is a curated tech marketplace delivering premium laptops, graphics cards, monitors, and accessories from trusted sellers. Shop performance-ready gear with confidence.">
+  <title>AllMarket Marketplace</title>
+  <link rel="stylesheet" href="skempohic.css">
+  <style>
+    .marketplace-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .marketplace-toolbar h2 {
+      margin: 0;
+      font-size: 24px;
+      color: rgba(255, 255, 255, 0.95);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    }
+
+    .marketplace-status {
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 14px;
+    }
+
+    .content {
+      max-width: 1180px;
+      width: min(98%, 1180px);
+      min-height: auto;
+      margin: 36px auto;
+      align-items: stretch;
+    }
+
+    .marketplace-panel {
+      background: rgba(8, 18, 44, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.35);
+      -webkit-backdrop-filter: blur(22px);
+      backdrop-filter: blur(22px);
+      margin-bottom: 22px;
+    }
+
+    .marketplace-toolbar {
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 18px;
+    }
+
+    .marketplace-toolbar h2 {
+      font-size: 28px;
+      letter-spacing: 0.8px;
+      margin-bottom: 4px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 28px;
+      margin-top: 20px;
+      width: 100%;
+      padding: 0;
+    }
+
+    .market-card {
+      display: grid;
+      grid-template-rows: 280px auto;
+      text-decoration: none;
+      border-radius: 20px;
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.22) 0%,
+        rgba(180, 220, 255, 0.12) 100%
+      );
+      -webkit-backdrop-filter: blur(18px);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6),
+        inset 0 -1px 0 rgba(100, 180, 255, 0.15);
+      transition: all 0.3s ease;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    .market-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow:
+        0 16px 48px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7),
+        inset 0 -1px 0 rgba(100, 180, 255, 0.2);
+    }
+
+    .market-card.clicked {
+      opacity: 0.3;
+      transform: scale(0.95);
+      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .product-image {
+      position: relative;
+      background: #121212;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .product-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .market-card:hover .product-photo {
+      transform: scale(1.05);
+    }
+
+    .product-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(0, 0, 0, 0.1) 0%,
+        rgba(0, 0, 0, 0.3) 100%
+      );
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-end;
+      padding: 12px;
+    }
+
+    .product-badge {
+      background: linear-gradient(135deg, #ff4757 0%, #ff3838 100%);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(255, 71, 87, 0.3);
+    }
+
+    .product-image::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.08), transparent 35%),
+        radial-gradient(circle at 70% 50%, rgba(255, 255, 255, 0.04), transparent 28%);
+      pointer-events: none;
+    }
+
+    .product-info {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .product-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.95);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+      line-height: 1.4;
+    }
+
+    .product-price {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      padding: 8px 14px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .product-meta {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.6);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+      line-height: 1.55;
+    }
+
+    .seller-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .seller-name {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 500;
+    }
+
+    .seller-phone {
+      font-size: 12px;
+      color: rgba(150, 210, 255, 0.9);
+      font-weight: 600;
+    }
+
+    .promo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .promo-card {
+      display: flex;
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.12) 0%,
+        rgba(180, 220, 255, 0.06) 100%
+      );
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .promo-image {
+      flex: 0 0 120px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .promo-badge {
+      background: #ff4757;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .promo-content {
+      flex: 1;
+      padding: 16px;
+    }
+
+    .promo-content h3 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.95);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    }
+
+    .promo-content p {
+      margin: 0 0 12px 0;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.5;
+    }
+
+    .promo-price {
+      font-size: 14px;
+      font-weight: 700;
+      color: #4ade80;
+    }
+
+    .marketplace-panel {
+      background: rgba(8, 20, 45, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      -webkit-backdrop-filter: blur(25px);
+      backdrop-filter: blur(25px);
+      margin-bottom: 24px;
+    }
+
+    .marketplace-toolbar {
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 18px;
+    }
+
+    .marketplace-toolbar h2 {
+      font-size: 28px;
+      letter-spacing: 0.7px;
+      color: #f8fbff;
+      margin-bottom: 4px;
+    }
+
+    .marketplace-status {
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 14px;
+    }
+
+    .market-card {
+      min-height: 470px;
+    }
+
+    .ad-banner {
+      display: flex;
+      background: linear-gradient(
+        135deg,
+        rgba(100, 200, 255, 0.15) 0%,
+        rgba(150, 100, 255, 0.15) 100%
+      );
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      margin-top: 16px;
+    }
+
+    .ad-content {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .ad-content h3 {
+      margin: 0 0 8px 0;
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.95);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    }
+
+    .ad-content p {
+      margin: 0 0 12px 0;
+      color: rgba(255, 255, 255, 0.75);
+      line-height: 1.5;
+    }
+
+    .ad-cta {
+      display: inline-block;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .ad-cta:hover {
+      transform: scale(1.05);
+    }
+
+    .ad-graphic {
+      flex: 0 0 120px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ad-icon {
+      font-size: 48px;
+      opacity: 0.8;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 24px;
+      }
+
+      .content {
+        width: min(96%, 1000px);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+      }
+
+      .market-card {
+        grid-template-rows: 260px auto;
+      }
+
+      .marketplace-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .marketplace-toolbar h2 {
+        font-size: 20px;
+      }
+
+      .promo-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .ad-banner {
+        flex-direction: column;
+      }
+
+      .ad-graphic {
+        flex: 0 0 80px;
+      }
+
+      .ad-content {
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .market-card {
+        grid-template-rows: 220px auto;
+      }
+
+      .product-info {
+        padding: 16px;
+      }
+
+      .product-title {
+        font-size: 16px;
+      }
+
+      .seller-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.82);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      z-index: 999;
+    }
+
+    .lightbox.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lightbox-content {
+      max-width: 960px;
+      width: 100%;
+      max-height: 90vh;
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(10, 23, 48, 0.95);
+      box-shadow: 0 20px 80px rgba(0, 0, 0, 0.65);
+      display: grid;
+      grid-template-rows: auto auto;
+      gap: 0;
+    }
+
+    .lightbox-content img {
+      width: 100%;
+      height: auto;
+      max-height: 78vh;
+      object-fit: contain;
+      display: block;
+      background: #050d1d;
+    }
+
+    .lightbox-caption {
+      padding: 16px 18px;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 15px;
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .close-button {
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+    }
+
+    .close-button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <header class="text-box">
+      <h2>AllMarket Marketplace</h2>
+      <p>AllMarket is your curated destination for premium tech gear — from gaming laptops and GPUs to monitors and accessory bundles. Find trusted local sellers, honest product detail, and marketplace-style listings built for buyers who want performance, reliability, and value.</p>
+    </header>
+
+    <section class="text-box">
+      <h2>Featured Promotions</h2>
+      <div class="promo-grid">
+        <div class="promo-card">
+          <div class="promo-image">
+            <div class="promo-badge">HOT DEAL</div>
+          </div>
+          <div class="promo-content">
+            <h3>RTX 3060 Bundle Special</h3>
+            <p>Get 20% off when you buy the laptop and GPU together! Limited time offer.</p>
+            <div class="promo-price">Save $240</div>
+          </div>
+        </div>
+        <div class="promo-card">
+          <div class="promo-image">
+            <div class="promo-badge">NEW</div>
+          </div>
+          <div class="promo-content">
+            <h3>Free Shipping</h3>
+            <p>Free shipping on all orders over $500. Use code FREESHIP at checkout.</p>
+            <div class="promo-price">No minimum</div>
+          </div>
+        </div>
+        <div class="promo-card">
+          <div class="promo-image">
+            <div class="promo-badge">SALE</div>
+          </div>
+          <div class="promo-content">
+            <h3>Tech Accessories</h3>
+            <p>Up to 50% off on cables, chargers, and peripherals. Stock up now!</p>
+            <div class="promo-price">Up to 50% off</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="text-box">
+      <div class="marketplace-panel">
+        <div class="marketplace-toolbar">
+          <h2>Marketplace Listings</h2>
+          <span class="marketplace-status">Showing 11 results near you</span>
+        </div>
+
+        <div class="gallery-grid">
+        <a href="#" class="market-card" data-graphic="laptop" data-type="Laptop" data-title="Rog Strix G15 2022 " data-price="$1,000" data-caption="Gaming-ready laptop with RTX 3060 Twin Edge OC, 16GB RAM, and a black aluminum body.">
+          <div class="product-image laptop">
+            <img src="https://m.media-amazon.com/images/I/810twtbCYOL._AC_SL1500_.jpg" alt="Black Gaming Laptop" class="product-photo">
+            <div class="product-overlay">
+              <div class="product-badge">RTX 3060</div>
+            </div>
+          </div>
+          <div class="product-info">
+            <div class="product-title">ASUS ROG Strix G15 (2021) Gaming Laptop, 15.6” 144Hz IPS Type FHD Display, NVIDIA GeForce RTX 3060, AMD Ryzen 9 5900HX, 16GB DDR4, 512GB PCIe NVMe SSD, RGB Keyboard, Windows 10, G513QM-ES94 Please no Low balling </div>
+            <div class="product-price">$860</div>
+            <div class="product-meta"></div>
+            <div class="seller-info">
+              <span class="seller-name">Alex Thompson</span>
+              <span class="seller-phone">(555) 123-4567</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="#" class="market-card" data-graphic="gpu" data-type="GPU" data-title="RTX 3060 Twin Edge OC Graphics Card" data-price="$460" data-caption="Brand new black GPU with dual fans and a premium cooler for desktop gaming builds.">
+          <div class="product-image gpu">
+            <img src="https://m.media-amazon.com/images/I/71tSwEWVHYL.jpg" alt="RTX 3060 Graphics Card" class="product-photo">
+            <div class="product-overlay">
+              <div class="product-badge">Twin Edge OC</div>
+            </div>
+          </div>
+          <div class="product-info">
+            <div class="product-title">3060 Twin Edge OC GPU</div>
+            <div class="product-price">$160</div>
+            <div class="product-meta">ZOTAC GAMING GeForce RTX 3060 Twin Edge OC 12GB GDDR6 192-bit 15 Gbps PCIE 4.0 Gaming Graphics Card, IceStorm 2.0 Cooling, Active Fan Control, Freeze Fan Stop, ZT-A30600H-10M </div>
+            <div class="seller-info">
+              <span class="seller-name">Sarah Chen</span>
+              <span class="seller-phone">(555) 987-6543</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="#" class="market-card" data-graphic="goods" data-type="Bundle" data-title="Black Tech Goods Bundle" data-price="$320" data-caption="A curated set of black accessories, chargers, and gaming peripherals for a clean setup.">
+          <div class="product-image goods">
+            <img src="https://images.pexels.com/photos/1109554/pexels-photo-1109554.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Tech Accessories Bundle" class="product-photo">
+            <div class="product-overlay">
+              <div class="product-badge">Bundle Deal</div>
+            </div>
+          </div>
+          <div class="product-info">
+            <div class="product-title">Black Tech Goods Bundle</div>
+            <div class="product-price">$320</div>
+            <div class="product-meta">Charger, headset, mouse pad, cables and unknown items </div>
+            <div class="seller-info">
+              <span class="seller-name">Mike Rodriguez</span>
+              <span class="seller-phone">(555) 456-7890</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="#" class="market-card" data-graphic="laptop" data-type="Laptop" data-title="Gaming Laptop RTX 4070" data-price="$1,899" data-caption="High-performance gaming laptop with RTX 4070, 32GB RAM, and 1TB SSD for ultimate gaming experience.">
+          <div class="product-image laptop">
+            <img src="https://m.media-amazon.com/images/I/716NWiLjkWL._AC_SL1086_.jpg" alt="Gaming Laptop RTX 4070" class="product-photo">
+            <div class="product-overlay">
+              <div class="product-badge">Lenovo LOQ 15ARP9</div>
+            </div>
+          </div>
+          <div class="product-info">
+            <div class="product-title">Lenovo LOQ 15ARP9</div>
+            <div class="product-price">$1,399</div>
+            <div class="product-meta">15.6" FHD IPS 100% SRGB 144Hz Display, Ryzen 7 7435HS, 24GB RAM, 1TB SSD, RTX 4070 8GB GDDR6 GPU, Backlit Eng-Arb, Win11, Luna Grey - [83JC008CAX] </div>
+            <div class="seller-info">
+              <span class="seller-name">Emma Davis</span>
+              <span class="seller-phone">(555) 234-5678</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="#" class="market-card" data-graphic="gpu" data-type="GPU" data-title="RTX 4070 Ti Super Graphics Card" data-price="$499" data-caption="Next-gen graphics card with advanced cooling and ray tracing capabilities for 4K gaming.">
+          <div class="product-image gpu">
+            <img src="https://www.inno3d.com/sites/default/files/2024-02/LP_4070Ti_SUPER_X3_OC_main_card_0.png" alt="RTX 4070 Ti Super GPU" class="product-photo">
+            <div class="product-overlay">
+              <div class="product-badge">1440p beast </div>
+            </div>
+          </div>
+          <div class="product-info">
+            <div class="product-title">RTX 4070 Ti Super GPU</div>
+            <div class="product-price">$499 price is firm </div>
+            <div class="product-meta">INNO3D® GEFORCE® RTX™ 4070 Ti SUPER X3 OC NVIDIA® GeForce RTX™ 40 Series GPUs are beyond fast for gamers and creators. They're powered by the ultra-efficient NVIDIA Ada Lovelace architecture which delivers a quantum leap in both performance and AI-powered graphics. Experience lifelike virtual worlds with ray tracing and ultra-high FPS gaming with the lowest latency. Discover revolutionary new ways to create and unprecedented workflow acceleration.
+Get equipped for supercharged gaming and creating with the NVIDIA® GeForce RTX™ 4070 Ti SUPER. It’s built with the ultra-efficient NVIDIA Ada Lovelace architecture. Experience super fast ray tracing, AI-accelerated performance with DLSS 3, new ways to create, and much more.</div>
+            <div class="seller-info">
+              <span class="seller-name">James Wilson</span>
+              <span class="seller-phone">(555) 345-6789</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="#" class="market-card" data-graphic="monitor" data-type="Monitor" data-title="4K Gaming Monitor 144Hz" data-price="$449" data-caption="27-inch 4K gaming monitor with 144Hz refresh rate, HDR support, and ultra-thin bezels.">
+          <div class="product-image monitor">
+            <img src="https://m.media-amazon.com/images/I/713ISq6vljL._AC_SL1500_.jpg" alt="4K Gaming Monitor" class="product-photo">
+            <div class="product-overlay">
+              <div class="product-badge">144Hz montior </div>
+            </div>
+          </div>
+          <div class="product-info">
+            <div class="product-title">4K Gaming Monitor 144Hz</div>
+            <div class="product-price">$449</div>
+            <div class="product-meta">Samsung Odyssey G70D 4K Gaming Monitor, 27 Inches, Screen with IPS Panel, 4K Resolution, 3840 x 2160 Pixels, AMD FreeSync Premium, HDR10+, Response Time 1 ms, Refresh Rate 144 Hz, </div>
+            <div class="seller-info">
+              <span class="seller-name">Lisa Chen</span>
+              <span class="seller-phone">(555) 567-8901</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="#" class="market-card" data-graphic="laptop" data-type="Laptop" data-title="Ultra-thin Business Laptop" data-price="$1,299" data-caption="Lightweight business laptop with Intel i7, 16GB RAM, and all-day battery life.">
+          <div class="product-image laptop">
+            <img src="https://media.us.lg.com/transform/ecomm-PDPGallery-1100x730/cf49788e-17bc-4f94-b9cb-96f189d76b16/Laptops_17Z90TL-H-AUB6U3_gallery_1_new_5000x5000?io=transform:fill,width:1200">
+            <div class="product-overlay">
+              <div class="product-badge">Business</div>
+            </div>
+          </div>
+          <div class="product-info">
+            <div class="product-title">Ultra-thin Business Laptop-LG Gram 17</div>
+            <div class="product-price">$1,299</div>
+            <div class="product-meta">Intel i7, 16GB RAM, 18hr battery     This 17” powerhouse is just 0.74” thin and an impressively light 3.2 lbs.
+    Experience seamless productivity with Copilot+ PC’s advanced AI capabilities
+    Intel®¹ Core™ Ultra 7 (Series 2) processor powers seamless AI performance and speed
+    gram Hybrid AI: On-device smarts plus cloud-powered AI for ultimate productivity²
+    LG gram Link⁵ app offers easy iOS and Android integration of up to 10 devices
+    Enjoy up to 23.5 hours of video playback⁴ with a powerful 77Wh battery
+    Passed 7 military-grade durability tests³ to handle your adventures and daily grind
+
+ </div>
+            <div class="seller-info">
+              <span class="seller-name">Robert Kim</span>
+              <span class="seller-phone">(555) 678-9012</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="#" class="market-card" data-graphic="gpu" data-type="GPU" data-title="RX 7800 XT Graphics Card" data-price="$549" data-caption="AMD Radeon RX 7800 XT with 16GB VRAM and excellent 1440p gaming performance.">
+          <div class="product-image gpu">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOSSEhuxIdMbnFKJRVQrMV1cY5uYGo2JHl8g&s" alt="RX 7800 XT GPU" class="product-photo">
+            <div class="product-overlay">
+              <div class="product-badge">AMD</div>
+            </div>
+          </div>
+          <div class="product-info">
+            <div class="product-title">RX 7800 XT GPU</div>
+            <div class="product-price">$349</div>
+            <div class="product-meta">16GB VRAM, 1440p gaming, AMD xperience  incredible performance, visuals, and efficiency when gaming and streaming  with the AMD Radeon™ RX 7700 XT and 7800 XT graphics cards, powered by the  AMD RDNA™ 3 architecture. Immerse yourself in next-generation desktop  experiences on some of the most advanced high refresh rate displays with up  to 16GB of GDDR6 memory, new frame generation technologies, advanced  raytracing, AI accelerators, AV1 encoding, and support for the  latest DisplayPort™ 2.1 technology. The Radeon™ RX 7700 XT  and 7800 XT delivers an incredible high refresh 1440p gaming & streaming  experience, with additional video memory to step into 4K. </div>
+            <div class="seller-info">
+              <span class="seller-name">Maria Garcia</span>
+              <span class="seller-phone">(555) 789-0123</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="#" class="market-card" data-graphic="keyboard" data-type="Keyboard" data-title="Mechanical Gaming Keyboard RGB" data-price="$129" data-caption="Premium mechanical keyboard with RGB lighting, Cherry MX switches, and aluminum frame.">
+          <div class="product-image keyboard">
+            <img src="https://m.media-amazon.com/images/I/61yxZosfL9L._AC_SL1000_.jpg">
+            <div class="product-overlay">
+              <div class="product-badge">RGB</div>
+            </div>
+          </div>
+          <div class="product-info">
+            <div class="product-title">Mechanical Gaming Keyboard RGB</div>
+            <div class="product-price">$129</div>
+            <div class="product-meta">Cherry MX, RGB, aluminum frame  "Red Mechanical Gaming Switches Guaranteed for 50 million keypresses with consistently smooth movement from top to bottom without any bump, allowing for lightning fast actuation. "
+"OLED Smart Display Adjust settings and see on the fly info straight from your game, music, or Discordall without tabbing out of your game."
+"Premium Magnetic Wrist Rest A simple magnetic solution for easy and secure attachment, full palm support, and a durable soft touch finish."
+"Aircraft Grade Aluminum Alloy The Series 5000 metal frame is manufactured for a lifetime of unbreakable durability and sturdiness."
+"Dynamic Per Key RGB Illumination Millions of color options and reactive typing effects make you the designer of your ultimate setup."
+"Five On Board Profiles Software free customization for saving up to 5 unique profiles locally on the keyboard, from game to game and on the go."
+"Dedicated Multimedia Controls A clickable metal roller and media keys allow you to adjust volume and settings on the fly: change brightness, rewind, skip, pause and more, all at the touch of a button." </div>
+            <div class="seller-info">
+              <span class="seller-name">David Park</span>
+              <span class="seller-phone">(555) 890-1234</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="#" class="market-card" data-graphic="laptop" data-type="Laptop" data-title="Creator Laptop RTX 4060" data-price="$1,599" data-caption="Content creation laptop with RTX 4060, 32GB RAM, and 2TB SSD for video editing and 3D work.">
+          <div class="product-image laptop">
+            <img src="https://m.media-amazon.com/images/I/716xiab6DAL.jpg" alt="Creator Laptop" class="product-photo">
+            <div class="product-overlay">
+              <div class="product-badge">Creator</div>
+            </div>
+          </div>
+          <div class="product-info">
+            <div class="product-title">Creator Laptop RTX 4060</div>
+            <div class="product-price">$1,599</div>
+            <div class="product-meta">Gaming Laptop, AMD Ryzen AI 9-365, 32 GB LPDDR5x RAM, 2 TB PCIe SSD, 16" QHD+ (2560x1600) Display, Nvidia G-Force RTX 4060, Per-Key RGB Keyboard, W11 Pro, Lunar Gray </div>
+            <div class="seller-info">
+              <span class="seller-name">Anna Johnson</span>
+              <span class="seller-phone">(555) 901-2345</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="text-box">
+      <h2>Marketplace Ads</h2>
+      <div class="ad-banner">
+        <div class="ad-content">
+          <h3>🚀 Upgrade Your Setup Today!</h3>
+          <p>Find the perfect gaming components for your build. RTX 3060 series now available with free shipping!</p>
+          <div class="ad-cta">Shop Now →</div>
+        </div>
+        <div class="ad-graphic">
+          <div class="ad-icon">⚡</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <button class="close-button" type="button" aria-label="Close viewer">×</button>
+    <div class="lightbox-content">
+      <img id="lightboxImage" src="" alt="Expanded artwork">
+      <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+  </div>
+
+  <script>
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightboxImage');
+    const lightboxCaption = document.getElementById('lightboxCaption');
+    const closeButton = document.querySelector('.close-button');
+    const cards = document.querySelectorAll('.market-card');
+
+    cards.forEach(card => {
+      card.addEventListener('click', event => {
+        event.preventDefault();
+        const title = card.dataset.title;
+        const price = card.dataset.price;
+        const caption = card.dataset.caption;
+        const productImage = card.querySelector('.product-photo');
+
+        // Add clicked class to make card transparent
+        card.classList.add('clicked');
+
+        if (productImage) {
+          lightboxImage.src = productImage.src;
+          lightboxImage.alt = productImage.alt;
+        } else {
+          lightboxImage.src = '';
+          lightboxImage.alt = title;
+        }
+        lightboxCaption.textContent = `${price} · ${caption}`;
+        lightbox.classList.add('show');
+        lightbox.setAttribute('aria-hidden', 'false');
+      });
+    });
+
+    closeButton.addEventListener('click', () => {
+      lightbox.classList.remove('show');
+      lightbox.setAttribute('aria-hidden', 'true');
+      lightboxImage.src = '';
+
+      // Remove clicked class from all cards
+      cards.forEach(card => card.classList.remove('clicked'));
+    });
+
+    lightbox.addEventListener('click', event => {
+      if (event.target === lightbox) {
+        closeButton.click();
+      }
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && lightbox.classList.contains('show')) {
+        closeButton.click();
+      }
+    });
+  </script>
+</body>
+</html>

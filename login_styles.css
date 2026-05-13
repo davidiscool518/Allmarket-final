@@ -1,0 +1,86 @@
+:root {
+    --blue-outline: #153B50;
+    --blue-background: #5792b4;
+    --primary-color: #CDC5B4;
+    --secondary-color: #813405;
+    --tertiary-color: #E55812;
+    --sidebar-primary: #2c3e50;
+    --sidebar-secondary: #295077;
+}
+* {
+    font-family: 'Courier New', Courier, monospace;
+}
+body, html {
+    margin: 0;
+    width: 100%;
+}
+.container {
+    display: flex;
+    height: 100vh;
+}
+.login-container {
+    display: flex;
+    justify-self: center;
+}
+.sidebar {
+    width: 250px;
+    background-color: var(--sidebar-primary);
+    color: white;
+    padding: 20px;
+    flex-shrink: 0;
+    box-shadow: 10px 0 15px -5px var(--sidebar-secondary);
+}
+.sidebar h2 {
+    display: flex;
+    justify-self: center;
+}
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+.sidebar li {
+    margin: 20px 0;
+    display: flex;
+    justify-self: center;
+    font-size: large;
+}
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+.sidebar a:hover {
+    color: var(--sidebar-secondary);
+}
+.content {
+    flex-grow: 1;
+    padding: 40px;
+    overflow-y: auto;
+}
+.am-title {
+    font-weight: bolder;
+    text-align: center;
+    color: var(--primary-color);
+}
+hr {
+    border: 2px dashed var(--blue-outline);
+}
+body {
+    background-color: var(--blue-background);
+}
+#am-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+#am-quote {
+    display: flex;
+    justify-content: center;
+    font-size: 21px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bolder;
+    color: var(--primary-color);
+}
